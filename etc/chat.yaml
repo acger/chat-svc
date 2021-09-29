@@ -1,0 +1,15 @@
+Name: chat.rpc
+ListenOn: 127.0.0.1:60003
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: chat.rpc
+Datasource: root:root@tcp(localhost:3306)/fireflyChat?charset=utf8mb4&parseTime=True&loc=Local
+Cache:
+  - Host: localhost:6379
+    Pass: redis123456
+UserSvc:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
