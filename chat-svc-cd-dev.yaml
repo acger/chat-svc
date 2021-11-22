@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: chat-svc
-        image: docker.io/dk251626910/ffl-chat-svc:latest
+        image: docker.io/dk251626910/ffl-chat-svc-dev:latest
         lifecycle:
           preStop:
             exec:

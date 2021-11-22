@@ -4,13 +4,18 @@ Etcd:
   Hosts:
     - etcd.default.svc.cluster.local:2379
   Key: chat.rpc
-Datasource: root:mysql123456@tcp(mysql.default.svc.cluster.local:3306)/fireflyChat?charset=utf8mb4&parseTime=True&loc=Local
+Datasource: root:mysql123123@tcp(mysql.default.svc.cluster.local:3306)/fireflyChat?charset=utf8mb4&parseTime=True&loc=Local
 Cache:
   - Host: redis-master.default.svc.cluster.local:6379
-    Pass: redis123456
+    Pass: redis123123
     Type: node
 UserSvc:
   Etcd:
     Hosts:
       - etcd.default.svc.cluster.local:2379
     Key: user.rpc
+Log:
+  ServiceName: "chat-svc"
+  Mode: "file"
+  Path: "/var/log/filebeat/chat-svc"
+  Level: "error"
