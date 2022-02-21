@@ -7,11 +7,13 @@ import (
 	"github.com/acger/chat-svc/internal/config"
 	"github.com/acger/chat-svc/internal/server"
 	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
+	"github.com/acger/chat-svc/pb/chat"
 
-	"github.com/tal-tech/go-zero/core/conf"
-	"github.com/tal-tech/go-zero/zrpc"
+	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/service"
+	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 var configFile = flag.String("f", "etc/chat.yaml", "the config file")
@@ -25,7 +27,11 @@ func main() {
 	srv := server.NewChatServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		template.RegisterChatServer(grpcServer, srv)
+		chat.RegisterChatServer(grpcServer, srv)
+
+		if c.Mode == service.DevMode || c.Mode == service.TestMode {
+			reflection.Register(grpcServer)
+		}
 	})
 	defer s.Stop()
 

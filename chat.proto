@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package template;
 
+option go_package = "./chat";
+
 message MsgSaveReq{
   uint64 Uid = 1;
   uint64 ToUid = 2;

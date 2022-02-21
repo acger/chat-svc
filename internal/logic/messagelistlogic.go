@@ -3,14 +3,11 @@ package logic
 import (
 	"context"
 	"github.com/acger/chat-svc/chat"
+	"github.com/acger/chat-svc/internal/svc"
 	"github.com/acger/chat-svc/model"
 	"github.com/jinzhu/copier"
+	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
-
-	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
-
-	"github.com/tal-tech/go-zero/core/logx"
 )
 
 type MessageListLogic struct {
@@ -27,8 +24,8 @@ func NewMessageListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Messa
 	}
 }
 
-func (l *MessageListLogic) MessageList(in *template.MsgListReq) (*template.MsgListRsp, error) {
-	var result *template.MsgListRsp
+func (l *MessageListLogic) MessageList(in *chat.MsgListReq) (*chat.MsgListRsp, error) {
+	var result *chat.MsgListRsp
 
 	l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
 		//更新已读状态
@@ -60,7 +57,7 @@ func (l *MessageListLogic) MessageList(in *template.MsgListReq) (*template.MsgLi
 		var total int64
 		tx.Model(model.Chat{}).Count(&total)
 
-		result = &template.MsgListRsp{
+		result = &chat.MsgListRsp{
 			Code:     0,
 			Total:    total,
 			PageSize: in.PageSize,

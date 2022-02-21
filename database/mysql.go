@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/acger/chat-svc/internal/config"
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"time"

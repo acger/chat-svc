@@ -8,11 +8,12 @@ import (
 
 	"github.com/acger/chat-svc/internal/logic"
 	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
+	"github.com/acger/chat-svc/pb/chat"
 )
 
 type ChatServer struct {
 	svcCtx *svc.ServiceContext
+	chat.UnimplementedChatServer
 }
 
 func NewChatServer(svcCtx *svc.ServiceContext) *ChatServer {
@@ -21,27 +22,27 @@ func NewChatServer(svcCtx *svc.ServiceContext) *ChatServer {
 	}
 }
 
-func (s *ChatServer) MessageSave(ctx context.Context, in *template.MsgSaveReq) (*template.Rsp, error) {
+func (s *ChatServer) MessageSave(ctx context.Context, in *chat.MsgSaveReq) (*chat.Rsp, error) {
 	l := logic.NewMessageSaveLogic(ctx, s.svcCtx)
 	return l.MessageSave(in)
 }
 
-func (s *ChatServer) MessageList(ctx context.Context, in *template.MsgListReq) (*template.MsgListRsp, error) {
+func (s *ChatServer) MessageList(ctx context.Context, in *chat.MsgListReq) (*chat.MsgListRsp, error) {
 	l := logic.NewMessageListLogic(ctx, s.svcCtx)
 	return l.MessageList(in)
 }
 
-func (s *ChatServer) ChatHistoryList(ctx context.Context, in *template.ChatHistoryReq) (*template.ChatHistoryRsp, error) {
+func (s *ChatServer) ChatHistoryList(ctx context.Context, in *chat.ChatHistoryReq) (*chat.ChatHistoryRsp, error) {
 	l := logic.NewChatHistoryListLogic(ctx, s.svcCtx)
 	return l.ChatHistoryList(in)
 }
 
-func (s *ChatServer) ChatNumber(ctx context.Context, in *template.ChatNumberReq) (*template.ChatNumberRsp, error) {
+func (s *ChatServer) ChatNumber(ctx context.Context, in *chat.ChatNumberReq) (*chat.ChatNumberRsp, error) {
 	l := logic.NewChatNumberLogic(ctx, s.svcCtx)
 	return l.ChatNumber(in)
 }
 
-func (s *ChatServer) ChatHistorySave(ctx context.Context, in *template.CHSaveReq) (*template.Rsp, error) {
+func (s *ChatServer) ChatHistorySave(ctx context.Context, in *chat.CHSaveReq) (*chat.Rsp, error) {
 	l := logic.NewChatHistorySaveLogic(ctx, s.svcCtx)
 	return l.ChatHistorySave(in)
 }

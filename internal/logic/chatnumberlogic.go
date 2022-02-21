@@ -5,9 +5,9 @@ import (
 	"github.com/acger/chat-svc/model"
 
 	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
+	"github.com/acger/chat-svc/chat"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ChatNumberLogic struct {
@@ -24,10 +24,10 @@ func NewChatNumberLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ChatNu
 	}
 }
 
-func (l *ChatNumberLogic) ChatNumber(in *template.ChatNumberReq) (*template.ChatNumberRsp, error) {
+func (l *ChatNumberLogic) ChatNumber(in *chat.ChatNumberReq) (*chat.ChatNumberRsp, error) {
 	var num int64
 	tx := l.svcCtx.DB.Model(&model.ChatHistory{})
 	tx.Where("uid = ?", in.Id).Count(&num)
 
-	return &template.ChatNumberRsp{Code: 0, Number: num}, nil
+	return &chat.ChatNumberRsp{Code: 0, Number: num}, nil
 }

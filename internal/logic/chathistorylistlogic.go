@@ -5,12 +5,11 @@ import (
 	"errors"
 	"github.com/acger/chat-svc/chat"
 	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
-	"github.com/acger/user-svc/userclient"
+	"github.com/acger/user-svc/user"
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ChatHistoryListLogic struct {
@@ -27,7 +26,7 @@ func NewChatHistoryListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 	}
 }
 
-func (l *ChatHistoryListLogic) ChatHistoryList(in *template.ChatHistoryReq) (*template.ChatHistoryRsp, error) {
+func (l *ChatHistoryListLogic) ChatHistoryList(in *chat.ChatHistoryReq) (*chat.ChatHistoryRsp, error) {
 	type ChatHistoryMessage struct {
 		Uid    uint64
 		Status bool
@@ -46,7 +45,7 @@ func (l *ChatHistoryListLogic) ChatHistoryList(in *template.ChatHistoryReq) (*te
 	result := query.Find(&chatHistory)
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return &template.ChatHistoryRsp{}, nil
+		return &chat.ChatHistoryRsp{}, nil
 	}
 
 	var uidList []uint64
@@ -55,8 +54,8 @@ func (l *ChatHistoryListLogic) ChatHistoryList(in *template.ChatHistoryReq) (*te
 	}
 
 	//获取用户信息
-	userListRsp, _ := l.svcCtx.UserSvc.UserList(l.ctx, &userclient.UserListReq{Id: uidList})
-	userMap := make(map[uint64]*userclient.UserInfo)
+	userListRsp, _ := l.svcCtx.UserSvc.UserList(l.ctx, &user.UserListReq{Id: uidList})
+	userMap := make(map[uint64]*user.UserInfo)
 
 	for _, u := range userListRsp.User {
 		userMap[u.Id] = u
@@ -74,5 +73,5 @@ func (l *ChatHistoryListLogic) ChatHistoryList(in *template.ChatHistoryReq) (*te
 		chatUserList = append(chatUserList, tmp)
 	}
 
-	return &template.ChatHistoryRsp{Code: 0, User: chatUserList}, nil
+	return &chat.ChatHistoryRsp{Code: 0, User: chatUserList}, nil
 }

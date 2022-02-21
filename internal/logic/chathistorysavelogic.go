@@ -6,9 +6,9 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/acger/chat-svc/internal/svc"
-	"github.com/acger/chat-svc/template"
+	"github.com/acger/chat-svc/chat"
 
-	"github.com/tal-tech/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type ChatHistorySaveLogic struct {
@@ -25,7 +25,7 @@ func NewChatHistorySaveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 	}
 }
 
-func (l *ChatHistorySaveLogic) ChatHistorySave(in *template.CHSaveReq) (*template.Rsp, error) {
+func (l *ChatHistorySaveLogic) ChatHistorySave(in *chat.CHSaveReq) (*chat.Rsp, error) {
 	db := l.svcCtx.DB
 	db.Transaction(func(tx *gorm.DB) error {
 		var fromHistory model.ChatHistory
@@ -49,5 +49,5 @@ func (l *ChatHistorySaveLogic) ChatHistorySave(in *template.CHSaveReq) (*templat
 		return nil
 	})
 
-	return &template.Rsp{}, nil
+	return &chat.Rsp{}, nil
 }
